@@ -14,7 +14,7 @@ let from_smtml model =
     | Smtml.Value.Nothing -> map
     | True -> Map.add name (Value.Bool true) map
     | False -> Map.add name (Value.Bool false) map
-    | Int x -> Map.add name (Value.Number (float_of_int x)) map
+    | Int x -> Map.add name (Value.Number (Z.to_float x)) map
     | Real x -> Map.add name (Value.Number x) map
     | Str x -> Map.add name (Value.String x) map
     | _ -> begin

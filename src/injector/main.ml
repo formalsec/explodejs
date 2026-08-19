@@ -85,7 +85,7 @@ let cmd_complete (settings : Settings.t) =
     read_line () |> String.trim
   in
 
-  let x = Smtml.Typed.symbol Smtml.Typed.Types.string "x" in
+  let x = Smtml.Typed.const Smtml.Typed.Types.string "x" in
   let c = Smtml.Typed.String.(contains x ~sub:(v candidate_str)) in
   let e = Injector.Smt_encoder.encode unfolded_rules desired_rule x in
   Logs.app (fun k -> k "SMT Expr: %a" Smtml.Typed.Bool.pp e);
@@ -135,7 +135,7 @@ let cmd_generate (settings : Settings.t) =
     read_line () |> String.trim |> int_of_string
   in
 
-  let x = Smtml.Typed.symbol Smtml.Typed.Types.string "x" in
+  let x = Smtml.Typed.const Smtml.Typed.Types.string "x" in
   let e = Injector.Smt_encoder.encode unfolded_rules desired_rule x in
   Logs.app (fun k -> k "SMT Expr: %a" Smtml.Typed.Bool.pp e);
 
@@ -150,7 +150,7 @@ let cmd_generate (settings : Settings.t) =
           Logs.app (fun k ->
             k "Satisfying model:@;%a" (Smtml.Model.pp ~no_values:false) m );
           let v =
-            Smtml.Model.evaluate m (Smtml.Symbol.make Ty_str "x")
+            Smtml.Model.evaluate m (Smtml.Symbol.make_const Ty_str "x")
             |> Option.get |> Smtml.Expr.value |> Smtml.Typed.Unsafe.wrap
           in
           Solver.add solver
